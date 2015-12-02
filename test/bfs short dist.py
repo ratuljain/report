@@ -1,0 +1,52 @@
+__author__ = 'rjain1'
+import collections
+
+g = {
+    'A': ['B', 'C'],
+    'B': ['C'],
+    'C': ['A', 'D', 'E'],
+    'D': ['A'],
+    'E': ['D', 'G'],
+    'F': ['H'],
+    'G': ['E', 'F'],
+    'H': ['G']
+}
+
+
+def bfs(graph, start, fin):
+    dist = {i: None for i in graph}
+    queue = collections.deque([(start, 0)])
+    visited = []
+    while queue:
+        node, path = queue.popleft()
+        visited.append(node)
+        if node == fin:
+            return path
+        for vertex in [i for i in graph[node] if i not in visited]:
+            queue.append((vertex, path + 1))
+        dist[vertex] = path
+
+
+print bfs(g, 'C', 'H')
+
+t = input('')
+for i in range(t):
+    l,n = [int(x) for x in raw_input('').split(',')]
+    ladders = {int(y.split(',')[0]):int(y.split(',')[1]) for y in raw_input('').split(' ')}
+    snakes = {int(y.split(',')[0]):int(y.split(',')[1]) for y in raw_input('').split(' ')}
+    board = [100] * 100
+    board[0] = 0
+    for i in range(100):
+        j = i + 1
+        for j in range(j, j+6):
+            if j >= 100:
+                break
+            board[j] = min(board[j], board[i] + 1)
+        if i in ladders:
+            board[ladders[i]] = min(board[ladders[i]], board[i])
+        if i in snakes:
+            if board[i] < board[snakes[i]]:
+                board[snakes[i]] = board[i]
+                i = snakes[i]
+
+    print board[99]
