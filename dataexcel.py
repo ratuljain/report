@@ -1,7 +1,7 @@
 from xlsxwriter.workbook import Workbook
 import cx_Oracle
 from queries import sql1
-
+import csv
 
 con = cx_Oracle.connect('read/read@192.168.84.20/sitep')
 cur = con.cursor()

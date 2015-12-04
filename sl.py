@@ -8,6 +8,22 @@ def bfs(g, start):
         new = set(g[n]) - enqueued
         enqueued |= new
         queue.extend([(n, child) for child in new])
+
+
+def shortest_path(g, start, end):
+    parents = {}
+    for parent, child in bfs(g, start):
+        parents[child] = parent
+        if child == end:
+            revpath = [end]
+            while True:
+                parent = parents[child]
+                revpath.append(parent)
+                if parent == start:
+                    break
+                child = parent
+            return list(reversed(revpath))
+    return -1  # or raise appropriate exception
 def depth_first(g,s,d):
     dist={}
     queue=deque([s])
@@ -24,20 +40,8 @@ def depth_first(g,s,d):
                     dist[neighbour]=dist[node]+1
                     queue.append(neighbour)
                     ob.append(neighbour)
-def shortest_path(g, start, end):
-    parents = {}
-    for parent, child in bfs(g, start):
-        parents[child] = parent
-        if child == end:
-            revpath = [end]
-            while True:
-                parent = parents[child]
-                revpath.append(parent)
-                if parent == start:
-                    break
-                child = parent
-            return list(reversed(revpath))
-    return None # or raise appropriate exception
+
+
 graph = {}
 l = []
 s = []
@@ -54,4 +58,4 @@ for t in l:
             graph[i].remove(t[0])
             graph[i].append(t[1])
 
-print shortest_path(graph,1,100)
+print len(shortest_path(graph, 1, 100)) - 1
