@@ -58,15 +58,6 @@ def retreiveTake(s):
             print n, s[i]
 
 
-#
 for s in list_of_medicine:
     retreiveTake(s)
 
-# def retreiveTake(tup):
-#     name = tup[0]
-#     phase = tup[1]
-#     print name
-#     # for i in phase:
-#     #     print i,phase[i]
-# retreiveTake(list_of_medicine[0])
-#
