@@ -58,6 +58,7 @@ def retreiveTake(s):
             print n, s[i]
 
 
+#
 for s in list_of_medicine:
     retreiveTake(s)
 
