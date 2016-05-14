@@ -1,67 +1,36 @@
-__author__ = 'rjain1'
-graph = {
-    'A': {'B': 8, 'E': 6},
-    'B': {'C': 6},
-    'C': {'H': 4},
-    'D': {'B': 2},
-    'E': {'F': 3, 'G': 2},
-    'F': {'G': 6},
-    'G': {'C': -1, 'D': 1},
-    'H': {'G': -2}
-}
+def dpMakeChange(coinValueList, change, minCoins, coinsUsed):
+    for cents in range(change + 1):
+        coinCount = cents
+        newCoin = 1
+        for j in [c for c in coinValueList if c <= cents]:
+            if minCoins[cents - j] + 1 < coinCount:
+                coinCount = minCoins[cents - j] + 1
+                newCoin = j
+        minCoins[cents] = coinCount
+        coinsUsed[cents] = newCoin
+    return minCoins[change]
 
 
-def relax(node, neighbour, graph, distance, predecessor):
-    if distance[neighbour] > distance[node] + graph[node][neighbour]:
-        distance[neighbour] = distance[node] + graph[node][neighbour]
-        predecessor[neighbour] = node
+def printCoins(coinsUsed, change):
+    coin = change
+    while coin > 0:
+        thisCoin = coinsUsed[coin]
+        print(thisCoin)
+        coin = coin - thisCoin
 
 
-def bellman_ford(graph, start):
-    distance = {node: float('inf') for node in graph}
-    predecessor = {node: None for node in graph}
-    distance[start] = 0
-    for i in range(len(graph) - 1):
-        for u in graph:
-            for v in graph[u]:
-                relax(u, v, graph, distance, predecessor)
+def main():
+    amnt = 11
+    clist = [1, 2, 3, 4]
+    coinsUsed = [0] * (amnt + 1)
+    coinCount = [0] * (amnt + 1)
 
-    for u in graph:
-        for v in graph[u]:
-            if distance[v] > distance[u] + graph[u][v]:
-                return "Graph has negative weights"
-
-    return distance, predecessor
+    print("Making change for", amnt, "requires")
+    print(dpMakeChange(clist, amnt, coinCount, coinsUsed), "coins")
+    print("They are:")
+    printCoins(coinsUsed, amnt)
+    print("The used list is as follows:")
+    print(coinsUsed)
 
 
-# print bellman_ford(graph)
-
-def test():
-    graph = {
-        'a': {'b': -1, 'c': 4},
-        'b': {'c': 3, 'd': 2, 'e': 2},
-        'c': {},
-        'd': {'b': 1, 'c': 5},
-        'e': {'d': -3}
-    }
-
-    d, p = bellman_ford(graph, 'a')
-
-    assert d == {
-        'a': 0,
-        'b': -1,
-        'c': 2,
-        'd': -2,
-        'e': 1
-    }
-
-    assert p == {
-        'a': None,
-        'b': 'a',
-        'c': 'b',
-        'd': 'e',
-        'e': 'b'
-    }
-
-
-test()
+main()

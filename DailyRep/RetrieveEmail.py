@@ -12,10 +12,10 @@ import os
 import time
 
 import time
-## dd/mm/yyyy format
+# dd/mm/yyyy format
 todayDate = time.strftime("%m/%d/%Y")
 searchString = "I18N Locales report for TTR Agents " + todayDate
-print searchString
+# print searchString
 
 try:
     os.remove("stats.xls")
@@ -97,7 +97,8 @@ def process_messages(folder):
     return messageList
 
 
-if __name__ == "__main__":
+def getMail():
+    # if __name__ == "__main__":
     # list(outlook.Folders)
     f = outlook.GetDefaultFolder(6)
     if DEBUG and f: print "Folder name: ", f.Name
@@ -108,15 +109,21 @@ if __name__ == "__main__":
     attachment = attachments.Item(1)
     attachment.SaveAsFile(os.getcwd() + '\\stats.xls')
     print os.getcwd() + '\\stats.xls'
-#
-time.sleep(10)
-print os.getcwd()
-fname = os.getcwd() + '\\stats.xls'
-saveLocation = ""
-print fname
-excel = win32.gencache.EnsureDispatch('Excel.Application')
-wb = excel.Workbooks.Open(fname)
+    time.sleep(10)
+    print "Mail saved"
 
-wb.SaveAs(fname + "x", FileFormat=51)  # FileFormat = 51 is for .xlsx extension
-wb.Close()  # FileFormat = 56 is for .xls extension
-excel.Application.Quit()
+
+#
+
+def convertToXlsx():
+    print os.getcwd()
+    fname = os.getcwd() + '\\stats.xls'
+    saveLocation = ""
+    print fname
+    excel = win32.gencache.EnsureDispatch('Excel.Application')
+    wb = excel.Workbooks.Open(fname)
+
+    wb.SaveAs(fname + "x", FileFormat=51)  # FileFormat = 51 is for .xlsx extension
+    wb.Close()  # FileFormat = 56 is for .xls extension
+    excel.Application.Quit()
+    print "Converted to XLSX"
