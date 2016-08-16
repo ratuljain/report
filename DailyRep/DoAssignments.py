@@ -24,7 +24,7 @@ UK_Sites = {"Agent": "B11",
             "assignment1": "A23",
             "assignment2": "A24",
             "assignment3": "A25",
-            "Owner": "Prabir"
+            "Owner": "Shefali"
             }
 
 ANZ_Sites = {"Agent": "C11",
@@ -42,7 +42,7 @@ ANZ_Sites = {"Agent": "C11",
              "assignment1": "A27",
              "assignment2": "A28",
              "assignment3": "A29",
-             "Owner": "Nanditha"
+             "Owner": "Vivek"
              }
 
 Indian_Sites = {"Agent": "D11",
@@ -78,7 +78,7 @@ SouthAfrican_Sites = {"Agent": "E11",
                       "assignment1": "A35",
                       "assignment2": "A36",
                       "assignment3": "A37",
-                      "Owner": "Vandana"
+                      "Owner": "Nanditha"
                       }
 
 Canada = {"Agent": "F11",
@@ -96,7 +96,7 @@ Canada = {"Agent": "F11",
           "assignment1": "A39",
           "assignment2": "A40",
           "assignment3": "A41",
-          "Owner": "Amitabh"
+          "Owner": "Ratul"
           }
 
 International = {

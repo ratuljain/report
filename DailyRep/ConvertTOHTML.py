@@ -6,7 +6,10 @@ from win32com.client import constants
 import os, time
 from ConsolidateHtmlCSS import consolidateToHTML
 from SendEmail import sendMail
+from win32com.client import Dispatch
 
+
+# import os, time
 
 def test_remove_sheet():
     wb = load_workbook('res.xlsx')
@@ -34,12 +37,33 @@ def convert():
     print "Converted to HTML"
 
 
+def autoFit():
+    excel = Dispatch('Excel.Application')
+    wb = excel.Workbooks.Open(os.getcwd() + '\\res1.xlsx')
+
+    # Activate second sheet
+    excel.Worksheets(1).Activate()
+
+    # Autofit column in active sheet
+    excel.ActiveSheet.Columns.AutoFit()
+    excel.ActiveSheet.Rows.AutoFit()
+
+    # Save changes in a new file
+    # wb.SaveAs(os.getcwd() + '\\res2.xlsx')
+
+    # Or simply save changes in a current file
+    wb.Save()
+
+    wb.Close()
+    print "Autofit done"
+
 def execute():
     test_remove_sheet()
-    convert()
-    time.sleep(3)
-    consolidateToHTML()
-    time.sleep(3)
-    sendMail()
+    # convert()
+    # time.sleep(3)
+    # consolidateToHTML()
+    # time.sleep(3)
+    # sendMail()
 
 # execute()
+# autoFit()

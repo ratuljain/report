@@ -1,36 +1,27 @@
-def dpMakeChange(coinValueList, change, minCoins, coinsUsed):
-    for cents in range(change + 1):
-        coinCount = cents
-        newCoin = 1
-        for j in [c for c in coinValueList if c <= cents]:
-            if minCoins[cents - j] + 1 < coinCount:
-                coinCount = minCoins[cents - j] + 1
-                newCoin = j
-        minCoins[cents] = coinCount
-        coinsUsed[cents] = newCoin
-    return minCoins[change]
+d = {}
 
 
-def printCoins(coinsUsed, change):
-    coin = change
-    while coin > 0:
-        thisCoin = coinsUsed[coin]
-        print(thisCoin)
-        coin = coin - thisCoin
+def addStuff(d, k, v):
+    if k in d:
+        d[k].append(v)
+    else:
+        d[k] = []
+        d[k].append(v)
 
 
-def main():
-    amnt = 11
-    clist = [1, 2, 3, 4]
-    coinsUsed = [0] * (amnt + 1)
-    coinCount = [0] * (amnt + 1)
+addStuff(d, "ravi travels", "arv-10:30,dep-10:40")
+addStuff(d, "ravi travels", "arv-09:30,dep-09:40")
+addStuff(d, "ravi travels", "arv-11:30,dep-12:40")
+addStuff(d, "kishore travels", "arv-09:30,dep-09:40")
+addStuff(d, "kishore travels", "arv-09:30,dep-09:40")
+# addStuff(d, 1, "a")
+# addStuff(d, 1, "a")
+# addStuff(d, 1, "a")
+# addStuff(d, 1, "a")
+# addStuff(d, 1, "a")
 
-    print("Making change for", amnt, "requires")
-    print(dpMakeChange(clist, amnt, coinCount, coinsUsed), "coins")
-    print("They are:")
-    printCoins(coinsUsed, amnt)
-    print("The used list is as follows:")
-    print(coinsUsed)
-
-
-main()
+print d
+# ravi travels: arv-10:00,dep-10:30
+# ravi travels: arv-09:30,dep-09:40
+# kishore travels: arv-09:30,dep-09:40
+# kishore travels: arv-10:00,dep-10:30

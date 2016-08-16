@@ -10,6 +10,7 @@ import win32com.client
 import win32com.client as win32
 import os
 import time
+import openpyxl
 
 import time
 # dd/mm/yyyy format
@@ -127,3 +128,32 @@ def convertToXlsx():
     wb.Close()  # FileFormat = 56 is for .xls extension
     excel.Application.Quit()
     print "Converted to XLSX"
+
+    time.sleep(3)
+
+    wb = openpyxl.load_workbook('stats.xlsx', data_only=True)
+    mainSheet = wb.get_sheet_by_name("Indian_Sites")
+    mainSheet["B" + str(mainSheet.max_row)] = str(int(mainSheet["B" + str(mainSheet.max_row)].value) +
+                                                  int(mainSheet["H" + str(mainSheet.max_row)].value) +
+                                                  int(mainSheet["I" + str(mainSheet.max_row)].value) +
+                                                  int(mainSheet["J" + str(mainSheet.max_row)].value))
+
+    mainSheet["D" + str(mainSheet.max_row)] = str(int(mainSheet["D" + str(mainSheet.max_row)].value) +
+                                                  int(mainSheet["G" + str(mainSheet.max_row)].value))
+
+    print mainSheet["D" + str(mainSheet.max_row)].value
+
+    mainSheet["E" + str(mainSheet.max_row)] = str(int(mainSheet["E" + str(mainSheet.max_row)].value) +
+                                                  int(mainSheet["I" + str(mainSheet.max_row)].value) +
+                                                  int(mainSheet["J" + str(mainSheet.max_row)].value))
+
+    print mainSheet["E" + str(mainSheet.max_row)].value
+
+    mainSheet["F" + str(mainSheet.max_row)] = str(int(mainSheet["F" + str(mainSheet.max_row)].value) +
+                                                  int(mainSheet["H" + str(mainSheet.max_row)].value))
+
+    print mainSheet["F" + str(mainSheet.max_row)].value
+
+    wb.save("stats.xlsx")
+
+    print "data changed"

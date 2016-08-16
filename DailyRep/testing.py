@@ -1,6 +1,5 @@
 import xlrd
 
-
 def returnDatafromTemplate():
     fname = "C:/Users/rjain1/PycharmProjects/report/DailyRep/stats2.xlsx"
     bk = xlrd.open_workbook(fname)

@@ -122,6 +122,10 @@ International = {
     ">92.5-94": "D9",
     ">91-92.5": "E9",
     "<91": "F9",
+    "Agent": "G11",
+    "Site": "G12",
+    "UAR": "G13",
+    "NULL": "G14"
 }
 
 greenFill = PatternFill(start_color='FF00FF00',
@@ -158,6 +162,28 @@ def getDatafromSheet(wb, sheetName):
     data["uarError"] = caUARErr
     data["nullError"] = NUICIIErr
     data["success"] = round(float(caSuccess), 2)
+
+    ## added to revise indian stats and not removing uar(s)
+    if sheetName == "Indian_Sites":
+        bIndex = "B" + str(caSheet.max_row)
+        BULLCII422 = int(caSheet['I' + str(caSheet.max_row)].value)
+        Error427 = int(caSheet['J' + str(caSheet.max_row)].value)
+        siteErr = int(caSheet['E' + str(caSheet.max_row)].value)
+        caSheet['E' + str(caSheet.max_row)] = siteErr + Error427 + BULLCII422
+        successRevised = round((float(caSheet['C' + str(caSheet.max_row)].value) / float(caSheet[bIndex].value)) * 100,
+                               2)
+        data["success"] = successRevised
+        caSheet['P9'] = successRevised
+        agentRevised = round((float(caSheet['D' + str(caSheet.max_row)].value) / float(caSheet[bIndex].value)) * 100, 2)
+        data["agentError"] = agentRevised
+        caSheet['P5'] = agentRevised
+        siteRevised = round((float(caSheet['E' + str(caSheet.max_row)].value) / float(caSheet[bIndex].value)) * 100, 2)
+        data["siteError"] = siteRevised
+        caSheet['P6'] = siteRevised
+        uarRevised = round((float(caSheet['F' + str(caSheet.max_row)].value) / float(caSheet[bIndex].value)) * 100, 2)
+        data["uarError"] = uarRevised
+        caSheet['P7'] = uarRevised
+        wb.save('stats.xlsx')
 
     print sheetName, data
 
@@ -304,7 +330,7 @@ def fillData(wb, sheetName):
 #     return mainSheet[cell].value
 
 def changeToAssignment(index):
-    return "B" + index[1:]
+    return "G" + index[1:]
 
 
 def returnAgentNamefromImpactDict(wb, dicOfImpactDict, sheetName):
@@ -510,6 +536,9 @@ def fillFormula(wb, sheetName):
     mainSheet["L1"] = "Site Impact"
     mainSheet["M1"] = "UAR Impact"
 
+
+
+
     # Getting value of total cell of the sheet
     total = "B" + str(mainSheet.max_row)
     t = float(mainSheet[total].value)
@@ -618,8 +647,81 @@ def calcInternational(wb):
     wb.save("res.xlsx")
 
 
+def getInternationalImpact(wb):
+    sheets = ['Canada', 'Indian_Sites', 'ANZ_Sites', 'UK_Sites', 'SouthAfrican_Sites']
+    res = []
+    internationalTotalStats = {}
+    totalRequests = 0
+    totalSuccess = 0
+    totalAgentError = 0
+    totalSiteError = 0
+    totalUARError = 0
+    totalNullError = 0
+
+    for i in sheets:
+        # print i
+        stats = {}
+        mainSheet = wb.get_sheet_by_name(i)
+        index = str(mainSheet.max_row)
+
+        requests = float(mainSheet['B' + index].value)
+        stats['TOTAL_REQUEST'] = requests
+        totalRequests += requests
+
+        success = float(mainSheet['C' + index].value)
+        stats['SUCCESS'] = success
+        totalSuccess += success
+
+        agent = float(mainSheet['D' + index].value)
+        stats['AGENT_ERROR'] = agent
+        totalAgentError += agent
+
+        site = float(mainSheet['E' + index].value)
+        stats['SITE_ERROR'] = site
+        totalSiteError += site
+
+        uar = float(mainSheet['F' + index].value)
+        stats['UAR_ERROR'] = uar
+        totalUARError += uar
+
+        null = float(mainSheet['H' + index].value)
+        stats['NULL_ERROR'] = null
+        totalNullError += null
+
+        res.append(stats)
+        # print stats
+
+    internationalTotalStats['TOTAL_REQUEST'] = totalRequests
+    internationalTotalStats['SUCCESS'] = totalSuccess
+    internationalTotalStats['AGENT_ERROR'] = totalAgentError
+    internationalTotalStats['SITE_ERROR'] = totalSiteError
+    internationalTotalStats['UAR_ERROR'] = totalUARError
+    internationalTotalStats['NULL_ERROR'] = totalNullError
+    print internationalTotalStats
+    print res
+
+    mainSheet = wb.get_sheet_by_name('Sheet1')
+    mainSheet['G10'] = "International"
+    mainSheet[International["Agent"]] = round(
+        (internationalTotalStats['AGENT_ERROR'] / internationalTotalStats['TOTAL_REQUEST'] * 100), 2)
+    mainSheet[International["Site"]] = round(
+        (internationalTotalStats['SITE_ERROR'] / internationalTotalStats['TOTAL_REQUEST'] * 100), 2)
+    mainSheet[International["UAR"]] = round(
+        (internationalTotalStats['UAR_ERROR'] / internationalTotalStats['TOTAL_REQUEST'] * 100), 2)
+    mainSheet[International["NULL"]] = round(
+        (internationalTotalStats['NULL_ERROR'] / internationalTotalStats['TOTAL_REQUEST'] * 100), 2)
+    wb.save("res.xlsx")
+
+
 def populateDataAuto():
     wb = openpyxl.load_workbook('stats.xlsx', data_only=True)
+    # mainSheet = wb.get_sheet_by_name("Indian_Sites")
+    # mainSheet["B49"] = "=SUM(B2:B47)-SUM(H2:H47)"
+    # wb.save("stats.xlsx")
+    # mainSheet = wb.get_sheet_by_name("Indian_Sites")
+    # mainSheet["B49"] = str(int(mainSheet["B49"].value) + int(mainSheet["I49"].value) + int(mainSheet["J49"].value))
+    # wb.save("stats.xlsx")
+
     sheets = wb.get_sheet_names()
     print sheets
 
@@ -636,9 +738,20 @@ def populateDataAuto():
         fillData(wb, i)
         fillFormula(wb, i)
 
+    wb.save("res.xlsx")
+
+    wb = openpyxl.load_workbook('res.xlsx', data_only=True)
+    getInternationalImpact(wb)
+
     print "Stats Added"
 
 # populateDataAuto()
 # getAgentImpact(wb, i)
 # fillFormula(wb, 31)
 # fillFormula(wb, "Canada")
+    # wb = openpyxl.load_workbook('stats.xlsx', data_only=True)
+    # # getInternationalImpact(wb)
+    # mainSheet = wb.get_sheet_by_name("Indian_Sites")
+    # mainSheet = wb.get_sheet_by_name("Indian_Sites")
+    # mainSheet["B49"] = "=SUM(B2:B47)-SUM(H2:H47)"
+    # wb.save("stats.xlsx")
