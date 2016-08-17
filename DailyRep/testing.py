@@ -1,7 +1,15 @@
 import xlrd
 
+import os
+
+cwd = os.getcwd()
+
+
+# print cwd
+
 def returnDatafromTemplate():
-    fname = "C:/Users/rjain1/PycharmProjects/report/DailyRep/stats2.xlsx"
+    fname = cwd + "/stats2.xlsx"
+    print fname
     bk = xlrd.open_workbook(fname)
     shxrange = range(bk.nsheets)
     try:

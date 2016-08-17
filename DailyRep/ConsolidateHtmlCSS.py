@@ -1,10 +1,13 @@
 from bs4 import BeautifulSoup
 
+import os
+
+cwd = os.getcwd()
 
 def consolidateToHTML():
-    HTMLsoup = BeautifulSoup(open("C:/Users/rjain1/PycharmProjects/report/DailyRep/res_files/sheet001.htm"),
+    HTMLsoup = BeautifulSoup(open(cwd + "/res_files/sheet001.htm"),
                              'html.parser')
-    CSSsoup = BeautifulSoup(open("C:/Users/rjain1/PycharmProjects/report/DailyRep/res_files/stylesheet.css"),
+    CSSsoup = BeautifulSoup(open(cwd + "/res_files/stylesheet.css"),
                             'html.parser')
 
     for tag in HTMLsoup.find_all('script'):

@@ -1,9 +1,12 @@
 __author__ = 'rjain1'
 import win32com.client
 
+import os
+
+cwd = os.getcwd()
 
 def sendMail():
-    text_file = open("C:/Users/rjain1/PycharmProjects/report/DailyRep/output.html", "r")
+    text_file = open(cwd + "/output.html", "r")
     x = text_file.read()
     # print x
 
