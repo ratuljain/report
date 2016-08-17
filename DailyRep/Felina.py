@@ -12,34 +12,35 @@ import DoAssignments
 
 import os
 
+cwd = os.getcwd()
 
 def cleanUp():
     try:
-        shutil.rmtree('C:\\Users\\rjain1\\PycharmProjects\\report\\DailyRep\\res_files')
+        shutil.rmtree(cwd + '\\res_files')
     except:
         pass
     try:
-        os.remove('C:\\Users\\rjain1\\PycharmProjects\\report\\DailyRep\\res.htm')
+        os.remove(cwd + '\\res.htm')
     except:
         pass
     try:
-        os.remove('C:\\Users\\rjain1\\PycharmProjects\\report\\DailyRep\\res.xlsx')
+        os.remove(cwd + '\\res.xlsx')
     except:
         pass
     try:
-        os.remove('C:\\Users\\rjain1\\PycharmProjects\\report\\DailyRep\\res1.xlsx')
+        os.remove(cwd + '\\res1.xlsx')
     except:
         pass
     try:
-        os.remove('C:\\Users\\rjain1\\PycharmProjects\\report\\DailyRep\\stats.xlsx')
+        os.remove(cwd + '\\stats.xlsx')
     except:
         pass
     try:
-        os.remove('C:\\Users\\rjain1\\PycharmProjects\\report\\DailyRep\\stats.xls')
+        os.remove(cwd + '\\stats.xls')
     except:
         pass
     try:
-        os.remove('C:\\Users\\rjain1\\PycharmProjects\\report\\DailyRep\\output.html')
+        os.remove(cwd + '\\output.html')
     except:
         pass
 
@@ -47,7 +48,7 @@ def cleanUp():
 cleanUp()
 
 
-# os.remove('C:\\Users\\rjain1\\PycharmProjects\\report\\DailyRep\\res.xlsx')
+# os.remove(cwd + '\\res.xlsx')
 
 def run():
     RetrieveEmail.getMail()
