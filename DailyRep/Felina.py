@@ -61,21 +61,21 @@ def run():
 
     FormatSheet.formatSheet()
 
-    ConvertTOHTML.test_remove_sheet()
-    time.sleep(10)
-    try:
-        ConvertTOHTML.autoFit()
-        time.sleep(10)
-    except:
-        time.sleep(5)
-        ConvertTOHTML.autoFit()
-        time.sleep(5)
-    ConvertTOHTML.convert()
-    time.sleep(2)
-    ConsolidateHtmlCSS.consolidateToHTML()
-    time.sleep(2)
-
-    SendEmail.sendMail()
+    # ConvertTOHTML.test_remove_sheet()
+    # time.sleep(10)
+    # try:
+    #     ConvertTOHTML.autoFit()
+    #     time.sleep(10)
+    # except:
+    #     time.sleep(5)
+    #     ConvertTOHTML.autoFit()
+    #     time.sleep(5)
+    # ConvertTOHTML.convert()
+    # time.sleep(2)
+    # ConsolidateHtmlCSS.consolidateToHTML()
+    # time.sleep(2)
+    #
+    # SendEmail.sendMail()
 
 
 run()
